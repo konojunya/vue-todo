@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>todo</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="new_todo">
+        <button @click="add">追加</button>
+        <button @click="compDelete">達成済み削除</button>
+        <ul>
+            <li v-for="(todo, index) in todos">
+                <!-- <button @click="delete">削除</button> -->
+                <button v-on:click="remove(index)">削除</button>
+                <input type="checkbox" id="checkbox" v-model="todo.isComp">
+                <span class="todo" v-bind:class="{active:todo.isComp}" @click="todo.isComp=!todo.isComp">
+                    {{ todo.desc }}
+                </span>
+            </li>
+        </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue "></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                new_todo: "",
+                todos: [
+                    {
+                        desc: 'タスク1',
+                        isComp: false
+                    },
+                    {
+                        desc: 'タスク2',
+                        isComp: false
+                    },
+                    {
+                        desc: 'タスク3',
+                        isComp: false
+                    },
+                    {
+                        desc: 'タスク4',
+                        isComp: false
+                    }
+                ]
+            },
+            methods: {
+                add: function (event) {
+                    if (this.new_todo !== "") {
+                        this.todos.push({
+                            desc: this.new_todo,
+                            isComp: false
+                        });
+                        this.new_todo = "";
+                    }
+                },
+                remove: function (target) {
+                    this.todos.splice(target, 1);
+                },
+                compDelete: function () {
+                    var tmpTodos = [];
+                    this.todos.forEach(function (value, index) {
+                        if (!value.isComp) {
+                            tmpTodos.push(value)
+                        }
+                    });
+                    this.todos = tmpTodos;
+                }
+            }
+        })
+    </script>
+    <style>
+        .todo:hover {
+            cursor: pointer;
+            border: 1px solid #000000;
+        }
+
+        .active {
+            text-decoration: line-through;
+        }
+
+        li {
+            list-style: none;
+        }
+    </style>
+</body>
+
+</html>
